@@ -689,7 +689,7 @@ def blog_wise_open_view():
         vim.command(":new")
     vim.command('setl syntax=blogsyntax')
     vim.command('setl completefunc=Completable')
-
+    vim.command(":only")
 
 @vim_encoding_check
 def vim_input(message = 'input', secret = False):
