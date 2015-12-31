@@ -6,43 +6,48 @@ VimBlog is a plugin for managing a Wordpress blog using Vim. There are many simi
 
 ## Requirements
 
-- Vim 7.3+ with python 2.6/2.7 support 
-- Python Environment matched wtih Vim's support 
-- python-markdown/python-markdown2 installed 
+- Vim 7.3+ with python 2.6/2.7 support
+- Python Environment matched wtih Vim's support
+- python-markdown/python-markdown2 installed
 - Wordpress 3.0.0 +
 
 ## Installation
 
-1. Clone ths repository into your Vim environment's plugin directory
-2. Create a ~/.vimrepressrc file, and put the following in it
+1. Clone ths repository into your Vim environment's plugin directory. You can
+   use any plugin manager you want.
+2. Create a ~/.vimpressrc file, with the following syntax
 
-blog_url = http://yoursite.com/ 
+[Blog0]
+blog_url = http://yoursite.com/
+username = you
+password = goodpassword
 
-username = you 
-
-password = goodpassword 
+[Blog1]
+blog_url = http://yoursite.com/
+username = you2
+password = goodpassword2
 
 ## Command Examples
 
-Some commands list above contain special usage, example below may clearify them for you. 
+Some commands list above contain special usage, example below may clearify them for you.
 
-    :BlogList             -  List 30 recent posts. 
-    :BlogList page        -  List 30 recent pages. 
-    :BlogList post 100    -  List 100 recent posts. 
+    :BlogList             -  List 30 recent posts.
+    :BlogList page        -  List 30 recent pages.
+    :BlogList post 100    -  List 100 recent posts.
 
-    :BlogNew post         -  Write an new post. 
-    :BlogNew page         -  Write an new page. 
+    :BlogNew post         -  Write an new post.
+    :BlogNew page         -  Write an new page.
 
-    :BlogSave             -  Save (defautely published.) 
-    :BlogSave draft       -  Save as draft. 
+    :BlogSave             -  Save (defautely published.)
+    :BlogSave draft       -  Save as draft.
 
-    :BlogPreview local    -  Preview page/post locally in your browser. 
-    :BlogPreview publish  -  Same as `:BlogSave publish' with brower opened. 
+    :BlogPreview local    -  Preview page/post locally in your browser.
+    :BlogPreview publish  -  Same as `:BlogSave publish' with brower opened.
 
-    :BlogOpen 679 
-    :BlogOpen http://your-first-blog.com/archives/679 
-    :BlogOpen http://your-second-blog.com/?p=679 
-    :BlogOpen http://your-third-blog.com/with-your-custom-permalink 
+    :BlogOpen 679
+    :BlogOpen http://your-first-blog.com/archives/679
+    :BlogOpen http://your-second-blog.com/?p=679
+    :BlogOpen http://your-third-blog.com/with-your-custom-permalink
 
 ## Modifications
 
