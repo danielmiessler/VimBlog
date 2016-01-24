@@ -16,11 +16,14 @@ VimBlog is a plugin for managing a Wordpress blog using Vim. There are many simi
 1. Clone ths repository into your Vim environment's plugin directory
 2. Create a ~/.vimrepressrc file, and put the following in it
 
-blog_url = http://yoursite.com/ 
+blog_url = http://yoursite.com/
+
 username = you 
+
 password = goodpassword 
 
 or incase you dont want your password stored in plaintext
+
 password_cmd = shell command that outputs your password
 
 ## Command Examples
