@@ -238,13 +238,11 @@ class DataObject(object):
                                  "Enter password for %s" % blog_url, True)
                     else:
                          password_cmd=config['password_cmd']
-                         print password_cmd
-                         blog_password=subprocess.call(password_cmd)
+                         blog_password=subprocess.check_output(password_cmd,shell=True)
+                         blog_password=blog_password.rstrip()
                 except KeyError, e:
                     raise VimPressException("Configuration error: %s" % e)
                 echomsg("Connecting to '%s' ... " % blog_url)
-                print blog_username
-                print blog_password
                 config["xmlrpc_obj"] = wp_xmlrpc(blog_url,
                         blog_username, blog_password)
 
@@ -275,7 +273,7 @@ class DataObject(object):
                 for sec in confpsr.sections():
                     sec_options=[i for i in conf_options if confpsr.has_option(sec,i)]
                     values = [confpsr.get(sec, i) for i in sec_options]
-                    conf_list.append(dict(zip(conf_options, values)))
+                    conf_list.append(dict(zip(sec_options, values)))
                 if len(conf_list) > 0:
                     self.__config = conf_list
                 else:
