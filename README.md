@@ -7,7 +7,7 @@ VimBlog is a plugin for managing a Wordpress blog using Vim. There are many simi
 ## Requirements
 
 - Vim 7.3+ with python 2.6/2.7 support 
-- Python Environment matched wtih Vim's support 
+- Python Environment matched with Vim's support 
 - python-markdown/python-markdown2 installed 
 - Wordpress 3.0.0 +
 
@@ -16,11 +16,15 @@ VimBlog is a plugin for managing a Wordpress blog using Vim. There are many simi
 1. Clone ths repository into your Vim environment's plugin directory
 2. Create a ~/.vimrepressrc file, and put the following in it
 
-blog_url = http://yoursite.com/ 
+blog_url = http://yoursite.com/
 
 username = you 
 
 password = goodpassword 
+
+or incase you dont want your password stored in plaintext
+
+password_cmd = shell command that outputs your password
 
 ## Command Examples
 

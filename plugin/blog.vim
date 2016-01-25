@@ -15,7 +15,7 @@
 " along with this program; if not, write to the Free Software Foundation,
 " Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  
 " 
-" Contributors:	Adrien Friggeri <adrien@friggeri.net>
+" Contributors:     Adrien Friggeri <adrien@friggeri.net>
 "               Pigeond <http://pigeond.net/blog/>
 "               Justin Sattery <justin.slattery@fzysqr.com>
 "               Lenin Lee <lenin.lee@gmail.com>
@@ -24,7 +24,7 @@
 " Forked By: Preston M.[BOYPT] <pentie@gmail.com>
 " Repository: https://bitbucket.org/pentie/vimrepress
 "
-" URL:		http://www.friggeri.net/projets/vimblog/
+" URL:         http://www.friggeri.net/projets/vimblog/
 "           http://pigeond.net/blog/2009/05/07/vimpress-again/
 "           http://pigeond.net/git/?p=vimpress.git
 "           http://fzysqr.com/
@@ -36,7 +36,7 @@
 "    - Write with Markdown, control posts format precisely.
 "    - Stores Markdown rawtext in wordpress custom fields.
 "
-" Version:	3.2.0
+" Version:     3.2.0
 "
 " Config: Create account configure as `~/.vimpressrc' in the following
 " format:
@@ -51,6 +51,12 @@
 "username = someone
 "password =
 "
+"[Blog2]
+"blog_url = https://someone.wordpress.com/
+"username = someone
+"passwordcmd = 'keyring get blog user' 
+"
+
 "#######################################################################
 
 if !has("python")
@@ -88,6 +94,7 @@ import os
 import mimetypes
 import webbrowser
 import tempfile
+import subprocess
 from ConfigParser import SafeConfigParser
 
 try:
@@ -223,14 +230,19 @@ class DataObject(object):
             if "xmlrpc_obj" not in config:
                 try:
                     blog_username = config['username']
-                    blog_password = config.get('password', '')
                     blog_url = config['blog_url']
+                    if 'password' in config:
+                         blog_password=config.get('password','')
+                         if blog_password == '':
+                              blog_password = vim_input(
+                                 "Enter password for %s" % blog_url, True)
+                    else:
+                         password_cmd=config['password_cmd']
+                         blog_password=subprocess.check_output(password_cmd,shell=True)
+                         blog_password=blog_password.rstrip()
                 except KeyError, e:
                     raise VimPressException("Configuration error: %s" % e)
                 echomsg("Connecting to '%s' ... " % blog_url)
-                if blog_password == '':
-                    blog_password = vim_input(
-                            "Enter password for %s" % blog_url, True)
                 config["xmlrpc_obj"] = wp_xmlrpc(blog_url,
                         blog_username, blog_password)
 
@@ -253,15 +265,15 @@ class DataObject(object):
 
             confpsr = SafeConfigParser()
             confile = os.path.expanduser("~/.vimpressrc")
-            conf_options = ("blog_url", "username", "password")
+            conf_options = ("blog_url", "username","password", "password_cmd")
 
             if os.path.exists(confile):
                 conf_list = []
                 confpsr.read(confile)
                 for sec in confpsr.sections():
-                    values = [confpsr.get(sec, i) for i in conf_options]
-                    conf_list.append(dict(zip(conf_options, values)))
-
+                    sec_options=[i for i in conf_options if confpsr.has_option(sec,i)]
+                    values = [confpsr.get(sec, i) for i in sec_options]
+                    conf_list.append(dict(zip(sec_options, values)))
                 if len(conf_list) > 0:
                     self.__config = conf_list
                 else:
@@ -271,14 +283,13 @@ class DataObject(object):
                             "If you still have your account info in "
                             "`.vimrc', remove `~/.vimpressrc' and "
                             "try again.")
-
             else:
                 try:
                     self.__config = vim.eval("VIMPRESS")
                 except vim.error:
                     pass
                 else:
-                    # wirte config to `~/.vimpressrc`,
+                    # write config to `~/.vimpressrc`,
                     # coding account in .vimrc is obsolesced.
                     if not os.path.exists(confile) and \
                             self.__config is not None:
